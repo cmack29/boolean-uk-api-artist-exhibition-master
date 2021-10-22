@@ -1,15 +1,19 @@
+const { address } = require("../utils/database")
 const prisma = require("../utils/database")
 
 const addExhibition = async (req, res) => {
     try{
         const newExhibition = await prisma.exhibition.create({
             data: {
-                ...req.body.exhibition
-            },
-            address: {
-                create: [{
-                    ...req.body.address
-                }]
+                name: req.body.name,
+                date: req.body.date,
+                address: {
+                    create: {
+                        street: req.body.address.street,
+                        city: req.body.address.city,
+                        postcode: req.body.address.postcode
+                    },
+                },
             },
             include: {
                 address: true
